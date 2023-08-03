@@ -10,34 +10,31 @@
  */
 class Solution {
 public:
-   ListNode* Kreverse(ListNode* head,int k,int n){
 
-        if(n<k)return head;
-        ListNode* next=NULL;
-        ListNode* curr=head;
-        ListNode* prev=NULL;
-        int cnt=0;
-        while(cnt<k and curr!=NULL){
-            next=curr->next;
-            curr->next=prev;
-            prev=curr;
-            curr=next;
-            cnt++;
-        }
-        if(next!=NULL)head->next=Kreverse(next,k,n-k);
-
-        return prev;
-    }
     ListNode* swapPairs(ListNode* head) {
-        if(head == NULL || head -> next == NULL)return head;
-        int k = 2;
-        ListNode* temp=head;
-        int n=0;
-        while(temp){
-            temp=temp->next;
-            n++;
+        ListNode* dummy = new ListNode();
+        dummy -> next = head;
+        ListNode* node= dummy;
+
+        while(node!= NULL){
+            ListNode* first = node -> next;
+            ListNode* second = NULL;
+
+            if(first != NULL){
+                second = first -> next;
+            }
+
+            if(second!=NULL){
+                ListNode* secondNext = second -> next;
+                second -> next = first;
+                node -> next = second;
+                first -> next = secondNext;
+                node = first;
+            }
+            else{
+                break;
+            }
         }
-        
-        return Kreverse(head,k,n);
+        return dummy -> next;
     }
 };
