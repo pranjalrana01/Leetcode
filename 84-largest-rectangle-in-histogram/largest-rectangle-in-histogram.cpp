@@ -1,5 +1,5 @@
-// class Solution {
-// public:
+ class Solution {
+ public:
 
 //     vector<int>NSL(vector<int>& heights){
 //         vector<int>left;
@@ -56,7 +56,7 @@
 //            return right;
 //        }
 
-//     int largestRectangleArea(vector<int>& heights) {
+  int largestRectangleArea(vector<int>& heights) {
 //         int n = heights.size();
 //         vector<int>left = NSL(heights);
 //         vector<int>right = NSR(heights);
@@ -81,64 +81,20 @@
 
 
 
-class Solution {
-
-    /*
-        Time Complexity : O(N)
-        Space Complexity : O(N)
-    */
-
-private:
-    int n;
+stack<int> stk; // Stack to store indices of heights
+    int maxArea = 0;
     
-    void getNextSmallerIdx(vector<int>& res, vector<int>& heights){
-        stack<int> s1;
-        s1.push(-1);
-        
-        for(int i=n-1; i>=0; i--){
-            int curr = heights[i];
-            while(s1.top() != -1 and heights[s1.top()] >= curr){
-                s1.pop();
-            }
+    for (int i = 0; i <= heights.size(); ++i) {
+        while (!stk.empty() && (i == heights.size() || heights[i] < heights[stk.top()])) {
+            int h = heights[stk.top()];
+            stk.pop();
             
-            res[i] = s1.top();
-            s1.push(i);
+            int w = stk.empty() ? i : i - stk.top() - 1;
+            maxArea = max(maxArea, h * w);
         }
+        stk.push(i);
     }
     
-    void getPrevSmallerIdx(vector<int>& res, vector<int>& heights){
-        stack<int> s1;
-        s1.push(-1);
-        
-        for(int i=0; i<n; i++){
-            int curr = heights[i];
-            while(s1.top() != -1 and heights[s1.top()] >= curr){
-                s1.pop();
-            }
-            
-            res[i] = s1.top();
-            s1.push(i);
-        }
+    return maxArea;
     }
-    
-public:
-    int largestRectangleArea(vector<int>& heights) {
-        n = heights.size();
-        int res = 0;
-        vector<int> nextSmaller(n), prevSmaller(n);
-        
-        getNextSmallerIdx(nextSmaller, heights);
-        getPrevSmallerIdx(prevSmaller, heights);
-        
-        for(int i=0; i<n; i++){
-            int currL = heights[i];
-            if(nextSmaller[i] == -1) nextSmaller[i] = n;
-            
-            int currB = nextSmaller[i] - prevSmaller[i] - 1;
-            int area = currL * currB;
-            res = max(area, res);
-        }
-        
-        return res;
-    }
-};
+    };
