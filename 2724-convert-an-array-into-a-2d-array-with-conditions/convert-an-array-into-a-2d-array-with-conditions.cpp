@@ -1,25 +1,29 @@
 class Solution {
 public:
     vector<vector<int>> findMatrix(vector<int>& nums) {
-        vector<vector<int>> ans;
-        unordered_map<int, int> mp;
-        for(auto i: nums){
+        vector<vector<int>>ans;
+        unordered_map<int,int>mp;
+        int maxi=0;
+        //PUSH ELEMENT IN MAP
+        for(auto i:nums){
             mp[i]++;
-        }  
+        }
+        for(auto i:mp){
+            maxi=max(maxi,i.second);
+        }
 
-        while(!mp.empty()){
-            vector<int> temp;
-            for(auto it = mp.begin(); it != mp.end(); ){
-                temp.push_back(it->first);
-                it->second--;
-                if(it->second == 0){
-                    it = mp.erase(it);
-                } else {
-                    ++it;
+        for(int j=0;j<maxi;j++){
+            vector<int>temp;
+
+            for(auto& i:mp){
+                if(i.second>0) {
+                    temp.push_back(i.first);
+                    i.second--;
                 }
             }
             ans.push_back(temp);
         }
         return ans;
+        
     }
 };
