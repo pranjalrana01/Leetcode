@@ -10,7 +10,7 @@
  */
 class Solution {
 public:
-    ListNode* Kreverse(ListNode* head,int k,int n){
+ListNode* Kreverse(ListNode* head,int k,int n){
 
         if(n<k)return head;
         ListNode* next=NULL;
@@ -28,10 +28,13 @@ public:
 
         return prev;
     }
+    
     ListNode* reverseKGroup(ListNode* head, int k) {
-        
-        if(head==NULL)return NULL;
-        ListNode* temp=head;
+        if(head == NULL){
+            return NULL;
+        }
+
+         ListNode* temp=head;
         int n=0;
         while(temp){
             temp=temp->next;
