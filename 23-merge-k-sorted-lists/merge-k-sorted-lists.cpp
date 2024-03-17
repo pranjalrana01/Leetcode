@@ -17,25 +17,24 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        priority_queue<ListNode*, vector<ListNode*>,cmp> q;
+        priority_queue<ListNode*,vector<ListNode*>,cmp>pq;
 
         ListNode* dummy = new ListNode(-1);
         ListNode* tail = dummy;
-
-        for(int i=0 ; i<lists.size(); i++){
+        for(int i=0 ; i<lists.size();i++){
             if(lists[i] != NULL){
-                q.push(lists[i]);
+                pq.push(lists[i]);
             }
         }
 
-        while(q.size()){
-            ListNode* temp = q.top();
-            tail -> next = temp;
-            tail = temp;
-            q.pop();
-            if(temp -> next != NULL)q.push(temp -> next);
+        while(pq.size()){
+            ListNode* node = pq.top();
+            tail -> next = node;
+            tail = node;
+            pq.pop();
+            if(node -> next != NULL)pq.push(node -> next);
         }
-        return dummy -> next;
 
+        return dummy -> next;
     }
 };
