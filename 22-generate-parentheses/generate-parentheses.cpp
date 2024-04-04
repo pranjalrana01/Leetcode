@@ -1,36 +1,40 @@
 class Solution {
 public:
-    void solve(string op, int open, int close, vector<string> &ans){
+    
+    void solve(vector<string>& ans, string op, int open, int close){
         if(open == 0 && close == 0){
             ans.push_back(op);
             return;
         }
-        
+
         if(open == close || close == 0){
             string op1 = op;
             op1.push_back('(');
-            solve(op1, open-1, close, ans);
+            solve(ans, op1, open-1, close);
         }
-        else if(open == 0){ 
+
+        else if(open == 0){
             string op1 = op;
             op1.push_back(')');
-            solve(op1, open, close-1, ans);
+            solve(ans, op1, open, close-1);
         }
+
         else{
             string op1 = op;
             string op2 = op;
             op1.push_back('(');
             op2.push_back(')');
-            solve(op1, open-1, close, ans);
-            solve(op2, open, close-1, ans);
+            solve(ans, op1, open-1, close);
+            solve(ans, op2, open, close-1);
         }
     }
+    
     vector<string> generateParenthesis(int n) {
         int open = n;
         int close = n;
-        vector<string> ans;
-        string op = "";
-        solve(op, open, close, ans);
+        string op="";
+        vector<string>ans;
+        solve(ans, op, open, close);
         return ans;
     }
 };
