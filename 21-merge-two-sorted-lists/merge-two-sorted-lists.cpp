@@ -1,53 +1,36 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
 class Solution {
 public:
-    ListNode* solve(ListNode* first, ListNode* second){
-
-        if(first -> next == NULL){
-            first -> next = second;
-            return first;
-        }
-        
-         ListNode* curr1 = first;
-         ListNode* next1 = first -> next;
-         ListNode* curr2 = second;
-         ListNode* next2 = second -> next;
-
-         while((next1 != NULL) && (curr2 != NULL)){
-            if((curr2 -> val >= curr1->val) && (curr2 -> val <= next1 -> val)){
-                curr1 -> next = curr2;
-                next2 = curr2 -> next;
-                curr2 -> next = next1;
-
-                curr1 = curr2;
-                curr2 = next2;
-            }
-
-            else{
-                curr1 = next1;
-                next1 = next1 -> next;
-                if(next1 == NULL){
-                    curr1 -> next = curr2;
-                    return first;
-                }
-            }
-        }
-        return first;
-    }
-
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        if(list1 == NULL){
-            return list2;
-        }
+        ListNode* dummy = new ListNode(0);
+        ListNode* temp = dummy;
+        ListNode* t1 = list1;
+        ListNode* t2 = list2;
 
-        if(list2 == NULL){
-            return list1;
+        while(t1 !=NULL && t2 != NULL){
+            if(t1 -> val < t2 -> val){
+                temp -> next = t1;
+                temp = t1;
+                t1 = t1 -> next;
+            }
+            else{
+                temp -> next = t2;
+                temp = t2;
+                t2 = t2 -> next;
+            }
         }
+        if(t1)temp -> next = t1;
+        else temp -> next = t2;
 
-        if(list1->val <= list2 -> val){
-            return solve(list1, list2);
-        }
-        else{
-            return solve(list2, list1);
-        }
+        return dummy -> next;
     }
 };
