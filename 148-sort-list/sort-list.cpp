@@ -1,85 +1,61 @@
 /**
  * Definition for singly-linked list.
- * struct ListNode* {
+ * struct ListNode {
  *     int val;
- *     ListNode* *next;
- *     ListNode*() : val(0), next(nullptr) {}
- *     ListNode*(int x) : val(x), next(nullptr) {}
- *     ListNode*(int x, ListNode* *next) : val(x), next(next) {}
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+
 class Solution {
 public:
-ListNode* findMid(ListNode* head) {
+
+ListNode* findmiddle(ListNode* head){
     ListNode* slow = head;
-    ListNode* fast = head -> next;
-    
-    while(fast != NULL && fast -> next != NULL) {
+    ListNode* fast = head->next;
+
+    while(fast!=NULL && fast-> next != NULL){
         slow = slow -> next;
-        fast = fast -> next -> next; 
+        fast = fast -> next -> next;
     }
     return slow;
 }
 
-ListNode* merge(ListNode* left, ListNode* right) {
-    
-    if(left == NULL)
-        return right;
-    
-    if(right == NULL)
-        return left;
-    
-    ListNode* ans = new ListNode(-1);
-    ListNode* temp = ans;
-    
-    //merge 2 sorted Linked List
-    while(left != NULL && right != NULL) {
-        if(left -> val < right -> val) {
-            temp -> next = left;
-            temp = left;
-            left = left -> next;
+ListNode* merge(ListNode* head1, ListNode* head2){
+    ListNode* dummy = new ListNode(-1);
+    ListNode* temp = dummy;
+
+    while(head1 != NULL && head2 != NULL){
+        if(head1 -> val < head2 -> val){
+            temp -> next = head1;
+            temp = head1;
+            head1 = head1 -> next;
         }
-        else
-        {
-            temp -> next = right;
-            temp = right;
-            right = right -> next;
+        else{
+            temp -> next = head2;
+            temp = head2;
+            head2 = head2 -> next;
         }
+
+        if(head1)temp -> next = head1;
+        else temp ->next = head2;
     }
-    
-    while(left != NULL) {
-        temp -> next = left;
-        temp = left;
-        left = left -> next;
-    }
-    
-    while(right != NULL) {
-        temp -> next = right;
-        temp = right;
-        right = right -> next;
-    }
-    
-    ans = ans -> next;
-    return ans;
-    
+
+return dummy -> next;
 }
     ListNode* sortList(ListNode* head) {
-        if(head == NULL || head -> next == NULL){
-            return head;
-        }
+        if(head == NULL || head -> next == NULL)return head;
 
-        //break the linked list into two hLVES
-        ListNode* mid = findMid(head);
-        ListNode* left = head;
-        ListNode* right = mid -> next;
-        mid -> next = NULL;
+        ListNode* middle = findmiddle(head);
+        ListNode* lefthead = head;
+        ListNode* righthead = middle -> next;
+        middle -> next = NULL;
 
-        //recursive call to break lnked list into two haLVES
-        left = sortList(left);
-        right =sortList(right);
+        lefthead = sortList(lefthead);
+        righthead = sortList(righthead);
 
-        //merge both left and right
-        ListNode* result = merge(left , right);
-        return result;
+        return merge(lefthead, righthead);
     }
 };
