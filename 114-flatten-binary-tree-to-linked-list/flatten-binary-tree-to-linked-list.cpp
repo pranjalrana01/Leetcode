@@ -1,38 +1,26 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
-    void flatten(TreeNode* curr) {
-         if (!curr) return; // Check if the input is null
-        
-        std::stack<TreeNode*> st;
-        st.push(curr);
-        
-        while (!st.empty()) {
-            curr = st.top();
-            st.pop();
+    void flatten(TreeNode* root) {
+
+        if(root == nullptr) return;
+        TreeNode* current = root;
+
+        while(current != nullptr){
             
-            if (curr->right) {
-                st.push(curr->right);
+            if(current->left){
+                TreeNode* prev = current->left;
+
+                while(prev->right){
+                    prev = prev->right;
+                }
+
+                prev->right = current->right;
+                current->right = current->left;
+                current->left = nullptr;
+
             }
-            if (curr->left) {
-                st.push(curr->left);
-            }
-            
-            if (!st.empty()) {
-                curr->right = st.top();
-            }
-            
-            curr->left = nullptr;
-        }
+
+            current = current->right;
+        }        
     }
 };
