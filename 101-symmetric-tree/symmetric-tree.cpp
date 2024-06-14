@@ -1,5 +1,5 @@
 /**
- * Definition for a binary tree node->
+ * Definition for a binary tree node.
  * struct TreeNode {
  *     int val;
  *     TreeNode *left;
@@ -11,18 +11,15 @@
  */
 class Solution {
 public:
-    bool isSymmetric(TreeNode* root) {
-        return root == NULL || isSymmetricHelp(root -> left, root -> right);
+    bool solve(TreeNode* &left, TreeNode* &right){
+        if(left == NULL || right == NULL)return left == right;
+
+        if(left -> val != right -> val)return false;
+
+        return solve(left -> left, right-> right)&&
+             solve(left -> right, right -> left);
     }
-
-    bool isSymmetricHelp(TreeNode* left, TreeNode* right){
-        if(left == NULL || right == NULL)
-        return left == right;
-
-        if(left->val != right->val)return false;
-
-        return isSymmetricHelp(left->left , right->right)
-        &&
-        isSymmetricHelp(left->right, right->left);
+    bool isSymmetric(TreeNode* root) {
+        return root == NULL || solve(root -> left, root -> right);
     }
 };
