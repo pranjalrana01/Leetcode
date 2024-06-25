@@ -1,36 +1,32 @@
 class Solution {
 public:
-    bool search(vector<vector<char>>& board, const string& word, int index,int row, int col){
+
+    bool search(vector<vector<char>>& board, string & word, int n, int m, int row, int col, int index){
         if(index == word.size())return true;
-
-        int rows = board.size();
-        int cols = board[0].size();
-
-        if(row<0 || col<0 || row>=rows || col>=cols || board[row][col] != word[index])return false;
+        
+        if(row<0 || col<0 || row>=n || col>=m || board[row][col] != word[index])return false;
 
         char temp = board[row][col];
         board[row][col] = '.';
-
-        bool found = search(board, word, index+1, row+1,col) || 
-                     search(board, word, index+1, row-1,col) ||
-                     search(board, word, index+1, row,col+1) ||
-                     search(board, word, index+1, row,col-1);
-
+        bool result = search(board, word, n, m, row+1, col, index+1) ||
+                      search(board, word, n, m, row-1, col, index+1) ||
+                      search(board, word, n, m, row, col+1, index+1) ||
+                      search(board, word, n, m, row, col-1, index+1);
+        
         board[row][col] = temp;
-        return found;
-
+        return result;
     }
 
     bool exist(vector<vector<char>>& board, string word) {
-        if(board.empty() || board[0].empty() || word.empty()) return false;
-        int rows = board.size();
-        int cols = board[0].size();
+        int n = board.size();
+        int m = board[0].size();
 
-        for(int i=0; i<rows ; i++){
-            for(int j=0 ; j<cols ; j++){
-                if(search(board, word, 0, i, j))return true;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(search(board, word, n, m, i, j, 0))return true;
             }
         }
+
         return false;
     }
 };
