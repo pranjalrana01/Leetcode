@@ -1,22 +1,29 @@
 class Solution {
 public:
+    void solve(vector<int>& nums) {
+        int n = nums.size();
+        int i = n - 2;
+
+        // Find the first decreasing element from the end
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+
+        if (i >= 0) {
+            int j = n - 1;
+            // Find the element just larger than nums[i]
+            while (j >= 0 && nums[j] <= nums[i]) {
+                j--;
+            }
+            // Swap them
+            swap(nums[i], nums[j]);
+        }
+
+        // Reverse the elements after the position i
+        reverse(nums.begin() + i + 1, nums.end());
+    }
+
     void nextPermutation(vector<int>& nums) {
-        int index = -1;
-       int n=nums.size();
-       for(int i=n-2 ; i>=0 ; i--){
-           if(nums[i] < nums[i+1]){
-               index = i;
-               break;
-           }
-       } 
-
-         for(int i=n-1 ; i>index && index != -1 ; i--){
-           if(nums[i] > nums[index]){
-               swap(nums[i] , nums[index]);
-               break;
-           }
-       }
-
-       reverse(nums.begin() + index + 1 , nums.end());
+        solve(nums);
     }
 };
